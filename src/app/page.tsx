@@ -21,22 +21,54 @@ import {
   ChevronRight,
   Award,
   Globe,
-  FileText
+  FileText,
+  GraduationCap,
+  MessageSquare
 } from 'lucide-react';
 import Image from 'next/image';
+import ScrollReveal from '@/components/ScrollReveal';
+
+const renderSkillIcon = (iconName: string) => {
+  switch (iconName) {
+    case 'MessageSquare': return <MessageSquare className="h-5 w-5" />;
+    case 'TrendingUp': return <TrendingUp className="h-5 w-5" />;
+    case 'Award': return <Award className="h-5 w-5" />;
+    case 'Calendar': return <Calendar className="h-5 w-5" />;
+    case 'FileSpreadsheet': return <FileSpreadsheet className="h-5 w-5" />;
+    case 'Database': return <Database className="h-5 w-5" />;
+    case 'FileText': return <FileText className="h-5 w-5" />;
+    case 'BookOpen': return <BookOpen className="h-5 w-5" />;
+    default: return <Award className="h-5 w-5" />;
+  }
+};
 
 export default async function Home() {
   // Fetch data on the server
   const profile = await getProfile();
-  const skills = await getSkills();
   const projects = await getProjects();
   const activities = await getActivities();
+
+  // Hardcoded Skills Dataset for static reliability
+  const skills = [
+    // Core Competencies
+    { id: "s1", name: "Communication", subtitle: "Public speaking, presentation & cultural diplomacy", category: "Core Competencies", proficiency: 95, iconName: "MessageSquare" },
+    { id: "s2", name: "Problem Solving", subtitle: "Strategic socio-economic analysis & coordination", category: "Core Competencies", proficiency: 90, iconName: "TrendingUp" },
+    { id: "s3", name: "Leadership", subtitle: "Team synergy, active coordination & choreography direction", category: "Core Competencies", proficiency: 92, iconName: "Award" },
+    { id: "s4", name: "Organization", subtitle: "Resource logistics & event schedule coordination", category: "Core Competencies", proficiency: 94, iconName: "Calendar" },
+    
+    // Academic & Technical Tools
+    { id: "s5", name: "Microsoft Excel", subtitle: "Economic modeling, pivot tables & data forecasting", category: "Academic & Technical", proficiency: 85, iconName: "FileSpreadsheet" },
+    { id: "s6", name: "SPSS Statistics", subtitle: "Quantitative regression & econometric hypothesis testing", category: "Academic & Technical", proficiency: 80, iconName: "Database" },
+    { id: "s7", name: "Policy Writing", subtitle: "Developmental policy briefs & economic research papers", category: "Academic & Technical", proficiency: 88, iconName: "FileText" },
+    { id: "s8", name: "Arts Management", subtitle: "Traditional dance choreography & stage orchestration", category: "Academic & Technical", proficiency: 96, iconName: "BookOpen" }
+  ];
 
   // Group skills by category
   const categories = Array.from(new Set(skills.map(s => s.category)));
 
   return (
     <div className="flex flex-col min-h-screen font-sans bg-slate-50/30 selection:bg-sky-200 selection:text-sky-900">
+      <ScrollReveal />
 
       {/* Dynamic Header */}
       <header className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-md border-b border-slate-100/80">
@@ -50,6 +82,7 @@ export default async function Home() {
 
           <nav className="hidden md:flex items-center gap-8">
             <a href="#about" className="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-sky-600 transition-colors">Profile</a>
+            <a href="#education" className="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-sky-600 transition-colors">Education</a>
             <a href="#skills" className="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-sky-600 transition-colors">Skills</a>
             <a href="#projects" className="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-sky-600 transition-colors">Research</a>
             <a href="#activities" className="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-sky-600 transition-colors">Activities</a>
@@ -152,51 +185,206 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Skills & Tools Section */}
+        {/* Formal Academic Pathway Section */}
+        <section id="education" className="py-20 bg-slate-50/20 border-b border-slate-100">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-widest text-sky-600 block mb-2">Academic Journey</span>
+                <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
+                  Formal Academic Pathway
+                </h2>
+              </div>
+              <p className="text-sm text-slate-500 max-w-md font-sans font-normal">
+                Chronological foundation of my secondary and higher education studies in economics and social sciences.
+              </p>
+            </div>
+
+            <div className="relative max-w-4xl mx-auto">
+              {/* Vertical center bar for desktop, left bar for mobile */}
+              <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 top-2 bottom-2 w-[2px] bg-slate-200/80"></div>
+
+              <div className="space-y-12">
+                
+                {/* Milestone 1: MTS Darunnajah 2 */}
+                <div className="relative flex flex-col md:flex-row items-start md:justify-between group reveal-on-scroll reveal-delay-100">
+                  {/* Bullet Dot */}
+                  <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 top-1.5 h-9 w-9 rounded-full bg-sky-50 border-4 border-white shadow-md shadow-slate-200 flex items-center justify-center text-sky-600 z-10 group-hover:scale-110 transition-all duration-300">
+                    <Award className="h-4 w-4" />
+                  </div>
+
+                  {/* Left Side Content (Desktop: MTs card, Mobile: spacing) */}
+                  <div className="w-full md:w-[45%] pl-12 md:pl-0 md:text-right order-2 md:order-1">
+                    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm group-hover:border-sky-300 group-hover:shadow-md transition-all duration-300">
+                      <span className="text-[10px] font-bold text-sky-600 bg-sky-50 px-2.5 py-1 rounded-full">
+                        2019 - 2022
+                      </span>
+                      <h3 className="font-serif text-lg font-bold text-slate-800 mt-3 group-hover:text-sky-600 transition-colors">
+                        MTs Darunnajah 2
+                      </h3>
+                      <p className="text-xs font-semibold text-slate-500 mt-1">
+                        Islamic Junior High School
+                      </p>
+                      <p className="text-xs text-slate-400 mt-3 leading-relaxed font-sans font-normal">
+                        Nurtured fundamental self-discipline, time management, active cooperation, and basic public speaking competencies. Participated in regional language and scouting activities.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Right Side Content (Desktop: Empty spacer) */}
+                  <div className="hidden md:block w-[45%] order-2"></div>
+                </div>
+
+                {/* Milestone 2: SMAN 12 */}
+                <div className="relative flex flex-col md:flex-row items-start md:justify-between group reveal-on-scroll reveal-delay-200">
+                  {/* Bullet Dot */}
+                  <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 top-1.5 h-9 w-9 rounded-full bg-sky-50 border-4 border-white shadow-md shadow-slate-200 flex items-center justify-center text-sky-600 z-10 group-hover:scale-110 transition-all duration-300">
+                    <BookOpen className="h-4 w-4" />
+                  </div>
+
+                  {/* Left Side (Desktop: Empty Spacer) */}
+                  <div className="hidden md:block w-[45%] order-1"></div>
+
+                  {/* Right Side (Desktop: Senior High Card, Mobile: Full Width) */}
+                  <div className="w-full md:w-[45%] pl-12 md:pl-0 order-2">
+                    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm group-hover:border-sky-300 group-hover:shadow-md transition-all duration-300">
+                      <span className="text-[10px] font-bold text-sky-600 bg-sky-50 px-2.5 py-1 rounded-full">
+                        2022 - 2025
+                      </span>
+                      <h3 className="font-serif text-lg font-bold text-slate-800 mt-3 group-hover:text-sky-600 transition-colors">
+                        SMAN 12 Tangerang Selatan
+                      </h3>
+                      <p className="text-xs font-semibold text-slate-500 mt-1">
+                        High School Diploma in Social Studies (IPS)
+                      </p>
+                      <p className="text-xs text-slate-400 mt-3 leading-relaxed font-sans font-normal">
+                        Specialized in geography, sociology, and basic accounting. Served as a core committee member and choreographer of the BESTARI Dance Club. Graduated with honors.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Milestone 3: UNNES */}
+                <div className="relative flex flex-col md:flex-row items-start md:justify-between group reveal-on-scroll reveal-delay-300">
+                  {/* Bullet Dot */}
+                  <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 top-1.5 h-9 w-9 rounded-full bg-sky-50 border-4 border-white shadow-md shadow-slate-200 flex items-center justify-center text-sky-600 z-10 group-hover:scale-110 transition-all duration-300">
+                    <GraduationCap className="h-4 w-4" />
+                  </div>
+
+                  {/* Left Side Content */}
+                  <div className="w-full md:w-[45%] pl-12 md:pl-0 md:text-right order-2 md:order-1">
+                    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm group-hover:border-sky-300 group-hover:shadow-md transition-all duration-300">
+                      <span className="text-[10px] font-bold text-sky-600 bg-sky-50 px-2.5 py-1 rounded-full">
+                        2025 - Present
+                      </span>
+                      <h3 className="font-serif text-lg font-bold text-slate-800 mt-3 group-hover:text-sky-600 transition-colors">
+                        Universitas Negeri Semarang
+                      </h3>
+                      <p className="text-xs font-semibold text-slate-500 mt-1">
+                        Bachelor of Development Economics (S.E.)
+                      </p>
+                      <p className="text-xs text-slate-400 mt-3 leading-relaxed font-sans font-normal">
+                        Currently focusing on regional development, developmental econometrics, and quantitative BPS data analysis. Actively participating in developmental research policy clubs and leadership seminars.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Right Side Content */}
+                  <div className="hidden md:block w-[45%] order-2"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Skills Section */}
         <section id="skills" className="py-20 bg-slate-50/30 border-b border-slate-100">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="text-xs font-bold uppercase tracking-widest text-sky-600 block mb-2">Tools & Competencies</span>
               <h2 className="font-serif text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
-                Research Methodologies & Quantitative Tools
+                Skills & Capabilities
               </h2>
               <p className="text-sm text-slate-500 mt-3 max-w-xl mx-auto">
-                A seamless blend of intuitive macro/microeconomic theory and technical data analysis utilizing modern statistical software.
+                A seamless blend of socio-economic theory, advanced statistical analysis, public communication, and creative management.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {categories.map((category) => {
                 const categorySkills = skills.filter(s => s.category === category);
                 return (
                   <div
                     key={category}
-                    className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm transition-all hover:shadow-md duration-300"
+                    className="bg-white/40 backdrop-blur-sm p-6 sm:p-8 rounded-3xl border border-slate-100/80 shadow-sm transition-all duration-300"
                   >
                     <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-                      <h3 className="font-serif text-lg font-bold text-slate-800">{category}</h3>
-                      <Award className="h-5 w-5 text-sky-600" />
+                      <h3 className="font-serif text-lg sm:text-xl font-extrabold text-slate-800">{category}</h3>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-full">
+                        {categorySkills.length} SKILLS
+                      </span>
                     </div>
 
-                    <div className="space-y-5">
-                      {categorySkills.map((skill) => (
-                        <div key={skill.id} className="group">
-                          <div className="flex justify-between items-center mb-1.5">
-                            <span className="text-xs font-bold text-slate-600 transition-colors group-hover:text-sky-600">
-                              {skill.name}
-                            </span>
-                            <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
-                              {skill.proficiency}%
-                            </span>
+                    <div className="grid grid-cols-1 gap-5">
+                      {categorySkills.map((skill) => {
+                        const radius = 20;
+                        const circumference = 2 * Math.PI * radius; // 125.66
+                        const strokeDashoffset = circumference - (skill.proficiency / 100) * circumference;
+
+                        return (
+                          <div 
+                            key={skill.id} 
+                            className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100/80 shadow-sm flex items-center justify-between gap-4 hover:border-sky-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
+                          >
+                            <div className="flex items-center gap-4 min-w-0">
+                              {/* Left Icon Wrapper */}
+                              <div className="h-12 w-12 rounded-xl bg-sky-50 flex items-center justify-center text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition-all duration-300 shrink-0">
+                                {renderSkillIcon(skill.iconName)}
+                              </div>
+
+                              {/* Text Details */}
+                              <div className="min-w-0">
+                                <h4 className="font-serif text-sm sm:text-base font-bold text-slate-800 group-hover:text-sky-600 transition-colors truncate">
+                                  {skill.name}
+                                </h4>
+                                <p className="text-[11px] sm:text-xs text-slate-400 font-sans mt-0.5 font-normal leading-normal line-clamp-2 sm:line-clamp-1">
+                                  {skill.subtitle}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* SVG Circular Progress Ring */}
+                            <div className="relative h-14 w-14 flex items-center justify-center shrink-0">
+                              <svg className="h-full w-full transform -rotate-90">
+                                {/* Track circle */}
+                                <circle
+                                  cx="28"
+                                  cy="28"
+                                  r={radius}
+                                  className="stroke-slate-100 fill-none"
+                                  strokeWidth="3.5"
+                                />
+                                {/* Progress circle */}
+                                <circle
+                                  cx="28"
+                                  cy="28"
+                                  r={radius}
+                                  className="stroke-sky-500 fill-none transition-all duration-1000 ease-out"
+                                  strokeWidth="3.5"
+                                  strokeDasharray={circumference}
+                                  strokeDashoffset={strokeDashoffset}
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                              {/* Percentage Label */}
+                              <span className="absolute text-[10px] font-black text-slate-700 group-hover:text-sky-600 transition-colors">
+                                {skill.proficiency}%
+                              </span>
+                            </div>
                           </div>
-                          <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-sky-500 rounded-full transition-all group-hover:bg-sky-600 duration-500"
-                              style={{ width: `${skill.proficiency}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 );

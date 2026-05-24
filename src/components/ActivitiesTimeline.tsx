@@ -86,7 +86,9 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
       {activities.map((activity, index) => (
         <div 
           key={activity.id}
-          className="relative flex gap-6 sm:gap-8 items-start group cursor-pointer"
+          className={`relative flex gap-6 sm:gap-8 items-start group cursor-pointer reveal-on-scroll ${
+            index === 0 ? 'reveal-delay-100' : index === 1 ? 'reveal-delay-200' : 'reveal-delay-300'
+          }`}
           onClick={() => openModal(activity)}
         >
           {/* Timeline bar indicator */}

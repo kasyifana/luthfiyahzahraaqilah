@@ -101,3 +101,23 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* Scroll Reveal transition utilities */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Transition delay overrides for staggered reveal-on-scroll */
+.reveal-delay-100 { transition-delay: 100ms !important; }
+.reveal-delay-200 { transition-delay: 200ms !important; }
+.reveal-delay-300 { transition-delay: 300ms !important; }
+.reveal-delay-400 { transition-delay: 400ms !important; }
+.reveal-delay-500 { transition-delay: 500ms !important; }
