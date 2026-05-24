@@ -66,26 +66,26 @@ export default function StatsCounter() {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
       <StatItem 
         icon={<Database className="h-6 w-6" />}
-        label="Data Points Analisis"
+        label="Analyzed Data Points"
         targetValue={66600}
         suffix="+"
         isSoon={true}
       />
       <StatItem 
         icon={<FileText className="h-6 w-6" />}
-        label="Karya Ilmiah / Esai"
+        label="Scientific Papers / Essays"
         targetValue={3}
         isSoon={true}
       />
       <StatItem 
         icon={<Wrench className="h-6 w-6" />}
-        label="Peralatan Ekonometrika"
+        label="Econometric Toolkits"
         targetValue={12}
         isSoon={true}
       />
       <StatItem 
         icon={<GraduationCap className="h-6 w-6" />}
-        label="Semester Akademik"
+        label="Academic Semester"
         targetValue={2}
       />
     </div>

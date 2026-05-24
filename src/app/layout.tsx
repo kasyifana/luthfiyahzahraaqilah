@@ -15,9 +15,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Luthfiyah Zahra Aqilah | Portfolio Analis Ekonomi Pembangunan",
-  description: "Academic & Data Portfolio of Luthfiyah Zahra Aqilah, a 2nd-semester Development Economics student at Universitas Pendidikan Indonesia (UPI). Specialized in econometrics, regional disparity, and BPS microdata analysis.",
-  keywords: ["Luthfiyah Zahra Aqilah", "Ekonomi Pembangunan", "Development Economics", "UPI", "Analis Data", "Ekonometrika", "BPS", "Jawa Barat"],
+  title: "Luthfiyah Zahra Aqilah | Development Economics Academic Portfolio",
+  description: "Academic & Data Portfolio of Luthfiyah Zahra Aqilah, a 2nd-semester Development Economics student at Universitas Negeri Semarang (UNNES). Specialized in econometrics, regional disparity, and BPS microdata analysis.",
+  keywords: ["Luthfiyah Zahra Aqilah", "Development Economics", "UNNES", "Data Analyst", "Econometrics", "BPS"],
   authors: [{ name: "Luthfiyah Zahra Aqilah" }],
 };
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${inter.variable} ${plusJakartaSans.variable} scroll-smooth`}>
+    <html lang="en" className={`${inter.variable} ${plusJakartaSans.variable} scroll-smooth`}>
       <body className="font-sans bg-slate-50/50 text-slate-900 min-h-screen antialiased selection:bg-sky-200 selection:text-sky-900">
         {children}
       </body>

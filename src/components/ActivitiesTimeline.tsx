@@ -108,7 +108,7 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
                     {activity.role}
                   </h3>
                   <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sky-600 flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider">
-                    <Eye className="h-3.5 w-3.5" /> Lihat
+                    <Eye className="h-3.5 w-3.5" /> View
                   </span>
                 </div>
                 <span className="text-xs font-bold text-slate-400">{activity.organization}</span>
@@ -165,7 +165,7 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
                 onClick={() => setActiveTab('activity')}
               >
                 <ImageIcon className="h-4 w-4" />
-                <span>Dokumentasi Kegiatan</span>
+                <span>Activity Photo</span>
               </button>
               <button 
                 className={`flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all ${
@@ -176,7 +176,7 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
                 onClick={() => setActiveTab('certificate')}
               >
                 <Award className="h-4 w-4" />
-                <span>Sertifikat Penghargaan</span>
+                <span>Certificate Award</span>
               </button>
             </div>
 
@@ -193,12 +193,12 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
                     )}
                   </div>
                   <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    {activeTab === 'activity' ? 'Belum Ada Dokumentasi' : 'Belum Ada Sertifikat'}
+                    {activeTab === 'activity' ? 'No Photo Uploaded' : 'No Certificate Uploaded'}
                   </h4>
                   <p className="text-[11px] text-slate-400 max-w-[280px] leading-relaxed">
                     {activeTab === 'activity' 
-                      ? 'Dokumentasi kegiatan belum diunggah. Silakan letakkan berkas image.png atau image.jpg di folder Anda.'
-                      : 'Kredensial sertifikat belum diunggah. Silakan letakkan berkas image.png atau image.jpg di folder Anda.'}
+                      ? 'Activity photo is not uploaded yet. Please drop an image.png or image.jpg file in this folder.'
+                      : 'Certificate document is not uploaded yet. Please drop an image.png or image.jpg file in this folder.'}
                   </p>
                 </div>
               ) : (
@@ -215,8 +215,8 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
               {!showPlaceholder && imgSrc && (
                 <p className="text-[11px] text-slate-400 mt-4 leading-relaxed text-center max-w-sm font-normal">
                   {activeTab === 'activity' 
-                    ? `Foto dokumentasi pelaksanaan peran sebagai ${selectedActivity.role} di ${selectedActivity.organization}.`
-                    : `Kredensial sertifikat tanda penghargaan resmi untuk ${selectedActivity.role} (diperoleh tahun ${selectedActivity.period.split(' - ')[0] || '2024'}).`}
+                    ? `Documentation photo of active participation as ${selectedActivity.role} at ${selectedActivity.organization}.`
+                    : `Official award certificate credential for ${selectedActivity.role} (received in ${selectedActivity.period.split(' - ')[0] || '2024'}).`}
                 </p>
               )}
             </div>

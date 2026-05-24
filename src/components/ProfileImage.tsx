@@ -43,10 +43,10 @@ export default function ProfileImage({ fallbackUrl, name }: ProfileImageProps) {
           LZA
         </div>
         <span className="text-xs font-bold text-slate-700 tracking-wider uppercase mb-1">
-          Foto Profil Belum Ada
+          Profile Photo Not Found
         </span>
         <p className="text-[10px] text-slate-400 max-w-[180px] leading-relaxed">
-          Letakkan berkas image.png atau image.jpg di folder public/images/profile/ Anda.
+          Please place an image.png or image.jpg file inside public/images/profile/ folder.
         </p>
       </div>
     );
