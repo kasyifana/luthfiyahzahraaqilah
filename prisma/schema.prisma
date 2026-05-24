@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id             String  @id @default(uuid())
+  name           String
+  title          String
+  bio            String
+  headshotUrl    String
+  academicFocus  String
+  email          String
+  linkedinUrl    String
+}
+
+model Skill {
+  id          String   @id @default(uuid())
+  name        String
+  category    String   // e.g., "Quantitative Tools", "Economic Core", "Analytical"
+  proficiency Int      // 1-100 or 1-5 representation
+}
+
+model Project {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  category        String   // e.g., "BPS Data Visualization", "Academic Essay", "Policy Review"
+  url             String?
+  dataPointsCount Int?     // Number of data points analyzed
+  publishedAt     String   // e.g., "April 2026"
+  pdfUrl          String?  // Vercel Blob URL for essay
+}
+
+model Activity {
+  id           String @id @default(uuid())
+  role         String
+  organization String
+  period       String // e.g., "Jan 2026 - Present"
+  description  String
+}
+
+model ContactLog {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
