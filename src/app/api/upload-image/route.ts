@@ -23,7 +23,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const fileExtension = path.extname(originalName) || '.png';
     const cleanFileName = `uploaded_${Date.now()}${fileExtension}`;
 
-    const isVercel = process.env.VERCEL === '1' || process.env.NOW_BUILD === '1';
+    const isVercel = (process.env.VERCEL === '1' || process.env.NOW_BUILD === '1') && process.env.NODE_ENV === 'production';
 
     // Helper function to handle local profile image write
     const writeProfileLocal = (): NextResponse => {
