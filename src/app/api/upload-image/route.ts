@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
+// True ONLY on Vercel's actual cloud servers (read-only filesystem)
+const ON_VERCEL = process.env.VERCEL === '1';
+
 export async function POST(request: Request): Promise<NextResponse> {
   try {
     const formData = await request.formData();
@@ -10,118 +13,68 @@ export async function POST(request: Request): Promise<NextResponse> {
     const isProfile = formData.get('isProfile') === 'true';
 
     if (!file) {
-      return NextResponse.json(
-        { success: false, error: 'No file was uploaded.' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'No file was uploaded.' }, { status: 400 });
     }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    
-    const originalName = file.name;
-    const fileExtension = path.extname(originalName) || '.png';
+    const fileExtension = path.extname(file.name) || '.png';
     const cleanFileName = `uploaded_${Date.now()}${fileExtension}`;
 
-    const isVercel = (process.env.VERCEL === '1' || process.env.NOW_BUILD === '1') && process.env.NODE_ENV === 'production';
-
-    // Helper function to handle local profile image write
-    const writeProfileLocal = (): NextResponse => {
-      if (isVercel) {
-        return NextResponse.json(
-          { success: false, error: 'Vercel Blob token is missing or misconfigured in production. Local uploads are not supported on Vercel read-only filesystem.' },
-          { status: 500 }
-        );
-      }
-      console.log("[UPLOAD-FALLBACK] Saving profile image to local disk.");
-      const targetPath = path.join(process.cwd(), 'public', 'images', 'profile', 'image.png');
-      const targetDir = path.dirname(targetPath);
-      
-      if (!fs.existsSync(targetDir)) {
-        fs.mkdirSync(targetDir, { recursive: true });
-      }
-      
-      fs.writeFileSync(targetPath, buffer);
-      return NextResponse.json({ 
-        success: true, 
-        url: `/images/profile/image.png?t=${Date.now()}` 
-      });
-    };
- 
-    // Helper function to handle local generic uploader write
-    const writeGenericLocal = (): NextResponse => {
-      if (isVercel) {
-        return NextResponse.json(
-          { success: false, error: 'Vercel Blob token is missing or misconfigured in production. Local uploads are not supported on Vercel read-only filesystem.' },
-          { status: 500 }
-        );
-      }
-      console.log("[UPLOAD-FALLBACK] Saving generic image to local uploads disk.");
-      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-      
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-      
-      const targetPath = path.join(uploadDir, cleanFileName);
-      fs.writeFileSync(targetPath, buffer);
-      return NextResponse.json({ 
-        success: true, 
-        url: `/uploads/${cleanFileName}` 
-      });
-    };
-
-    // 1. Profile photo upload branch
-    if (isProfile) {
-      // Check if we even have a token pattern
-      const token = process.env.BLOB_READ_WRITE_TOKEN;
-      const hasValidTokenPattern = token && token.startsWith('vercel_blob_rw_');
-
-      if (!hasValidTokenPattern) {
-        console.warn("[UPLOAD] Vercel Blob token is missing or invalid. Defaulting to local write.");
-        return writeProfileLocal();
-      }
-
-      try {
-        console.log("[UPLOAD] Trying Vercel Blob profile photo upload...");
-        const blob = await put(`profile/image${fileExtension}`, buffer, {
-          access: 'public',
-        });
-        return NextResponse.json({ 
-          success: true, 
-          url: blob.url 
-        });
-      } catch (blobError) {
-        console.error("[UPLOAD-WARNING] Vercel Blob upload failed (unauthorized or network). Falling back to local storage:", blobError);
-        return writeProfileLocal();
-      }
-    }
-
-    // 2. Generic project/activity image upload branch
+    const blobPath = isProfile ? `profile/image${fileExtension}` : `uploads/${cleanFileName}`;
     const token = process.env.BLOB_READ_WRITE_TOKEN;
-    const hasValidTokenPattern = token && token.startsWith('vercel_blob_rw_');
+    const hasValidToken = token && token.startsWith('vercel_blob_rw_');
 
-    if (!hasValidTokenPattern) {
-      console.warn("[UPLOAD] Vercel Blob token is missing or invalid. Defaulting to local write.");
-      return writeGenericLocal();
+    // --- CLOUD PATH: Try Vercel Blob if valid token exists ---
+    if (hasValidToken) {
+      try {
+        console.log(`[UPLOAD] Uploading to Vercel Blob: ${blobPath}`);
+        const blob = await put(blobPath, buffer, { access: 'public' });
+        console.log(`[UPLOAD] Success: ${blob.url}`);
+        return NextResponse.json({ success: true, url: blob.url });
+      } catch (blobError) {
+        console.error('[UPLOAD] Vercel Blob upload failed:', blobError);
+        // If on Vercel cloud, don't try local write - return error
+        if (ON_VERCEL) {
+          return NextResponse.json(
+            { success: false, error: 'Cloud storage upload failed. Please check Vercel Blob configuration.' },
+            { status: 500 }
+          );
+        }
+        // On local dev, fall through to local disk write
+      }
     }
 
-    try {
-      console.log("[UPLOAD] Trying Vercel Blob generic uploader...");
-      const blob = await put(`uploads/${cleanFileName}`, buffer, {
-        access: 'public',
-      });
-      return NextResponse.json({ 
-        success: true, 
-        url: blob.url 
-      });
-    } catch (blobError) {
-      console.error("[UPLOAD-WARNING] Vercel Blob upload failed. Falling back to local storage:", blobError);
-      return writeGenericLocal();
+    // --- LOCAL PATH: Write to disk (only works on local dev) ---
+    if (ON_VERCEL) {
+      // No valid token and on Vercel - explain the issue clearly
+      console.error('[UPLOAD] No valid BLOB_READ_WRITE_TOKEN found. Cannot write to Vercel read-only filesystem.');
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Image upload requires a valid BLOB_READ_WRITE_TOKEN. Please connect a Vercel Blob store in your Vercel project settings (Storage tab), then redeploy.'
+        },
+        { status: 500 }
+      );
+    }
+
+    // Local development fallback - write to public folder
+    if (isProfile) {
+      console.log('[UPLOAD-LOCAL] Saving profile image to local disk.');
+      const targetPath = path.join(process.cwd(), 'public', 'images', 'profile', 'image.png');
+      fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+      fs.writeFileSync(targetPath, buffer);
+      return NextResponse.json({ success: true, url: `/images/profile/image.png?t=${Date.now()}` });
+    } else {
+      console.log('[UPLOAD-LOCAL] Saving image to local uploads folder.');
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+      fs.mkdirSync(uploadDir, { recursive: true });
+      fs.writeFileSync(path.join(uploadDir, cleanFileName), buffer);
+      return NextResponse.json({ success: true, url: `/uploads/${cleanFileName}` });
     }
 
   } catch (error) {
-    console.error("Self-healing multi-mode uploader failed entirely:", error);
+    console.error('[UPLOAD] Unexpected error:', error);
     return NextResponse.json(
       { success: false, error: (error as Error).message },
       { status: 500 }
