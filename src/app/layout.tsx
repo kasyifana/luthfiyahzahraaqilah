@@ -28,7 +28,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${plusJakartaSans.variable} scroll-smooth`}>
-      <body className="font-sans bg-slate-50/50 text-slate-900 min-h-screen antialiased selection:bg-sky-200 selection:text-sky-900">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme') || 'light';
+                  if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="font-sans bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen antialiased selection:bg-sky-200 selection:text-sky-900 transition-colors duration-300">
         {children}
       </body>
     </html>

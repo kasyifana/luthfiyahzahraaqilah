@@ -41,20 +41,23 @@ const StatItem: React.FC<StatItemProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center p-6 bg-white border border-slate-100 rounded-2xl shadow-sm glow-sky transition-all hover:scale-105 duration-300 hover:border-sky-100 relative overflow-hidden">
-      <div className="p-3 mb-4 rounded-xl bg-sky-50 text-sky-600">
+    <div className="flex flex-col items-center p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800/80 rounded-2xl shadow-sm glow-sky transition-all hover:scale-105 duration-300 hover:border-sky-100 dark:hover:border-sky-800 relative overflow-hidden">
+      <div className="p-3 mb-4 rounded-xl bg-sky-50 dark:bg-sky-950/80 text-sky-600 dark:text-sky-400">
         {icon}
       </div>
       {isSoon ? (
-        <span className="text-xl sm:text-2xl font-serif font-black text-sky-600 uppercase tracking-widest my-1 sm:my-2 select-none">
-          Soon
+        <span className="text-lg sm:text-xl font-serif font-black bg-gradient-to-r from-sky-500 via-sky-600 to-indigo-600 bg-clip-text text-transparent uppercase tracking-widest my-1 sm:my-2 select-none flex items-center justify-center animate-[pulse_2.5s_infinite_ease-in-out]">
+          <span>Soon</span>
+          <span className="animate-[bounce_1s_infinite_100ms] text-sky-500 inline-block ml-0.5">.</span>
+          <span className="animate-[bounce_1s_infinite_300ms] text-sky-600 inline-block ml-0.5">.</span>
+          <span className="animate-[bounce_1s_infinite_500ms] text-indigo-500 inline-block ml-0.5">.</span>
         </span>
       ) : (
-        <span className="text-3xl sm:text-4xl font-serif font-bold text-slate-800 tracking-tight">
+        <span className="text-3xl sm:text-4xl font-serif font-bold text-slate-800 dark:text-slate-100 tracking-tight transition-colors duration-300">
           {formatNumber(value)}{suffix}
         </span>
       )}
-      <span className="mt-2 text-[10px] sm:text-xs font-semibold tracking-wider text-slate-500 uppercase text-center">
+      <span className="mt-2 text-[10px] sm:text-xs font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase text-center transition-colors duration-300">
         {label}
       </span>
     </div>

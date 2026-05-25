@@ -93,33 +93,33 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
         >
           {/* Timeline bar indicator */}
           {index !== activities.length - 1 && (
-            <div className="absolute left-[19px] sm:left-[23px] top-10 bottom-0 w-[2px] bg-slate-200"></div>
+            <div className="absolute left-[19px] sm:left-[23px] top-10 bottom-0 w-[2px] bg-slate-200 dark:bg-slate-800"></div>
           )}
 
           {/* Bullet */}
-          <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-white border border-slate-200/80 shadow-sm flex items-center justify-center shrink-0 text-sky-600 font-serif font-black text-sm group-hover:border-sky-300 transition-all duration-300">
+          <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-center shrink-0 text-sky-600 font-serif font-black text-sm group-hover:border-sky-300 dark:group-hover:border-sky-700 transition-all duration-300">
             {index + 1}
           </div>
 
           {/* Body card */}
-          <div className="flex-grow bg-white border border-slate-100 p-5 sm:p-6 rounded-2xl shadow-sm hover:border-sky-300 hover:shadow-md hover:shadow-sky-100/10 hover:-translate-y-0.5 transition-all duration-300">
+          <div className="flex-grow bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 sm:p-6 rounded-2xl shadow-sm hover:border-sky-300 dark:hover:border-sky-700 hover:shadow-md dark:hover:shadow-none hover:-translate-y-0.5 transition-all duration-300">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-serif text-base sm:text-lg font-bold text-slate-800 group-hover:text-sky-600 transition-colors">
+                  <h3 className="font-serif text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
                     {activity.role}
                   </h3>
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sky-600 flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sky-600 dark:text-sky-400 flex items-center gap-0.5 text-[10px] font-bold uppercase tracking-wider">
                     <Eye className="h-3.5 w-3.5" /> View
                   </span>
                 </div>
-                <span className="text-xs font-bold text-slate-400">{activity.organization}</span>
+                <span className="text-xs font-bold text-slate-400 dark:text-slate-500">{activity.organization}</span>
               </div>
-              <span className="text-[10px] font-bold text-sky-600 bg-sky-50 border border-sky-100/50 px-2.5 py-1 rounded-full self-start sm:self-center">
+              <span className="text-[10px] font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/85 border border-sky-100/50 dark:border-sky-900/40 px-2.5 py-1 rounded-full self-start sm:self-center">
                 {activity.period}
               </span>
             </div>
-            <p className="text-xs text-slate-500 leading-relaxed font-normal">
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
               {activity.description}
             </p>
           </div>
@@ -131,38 +131,38 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
           {/* Backdrop Overlay */}
           <div 
-            className="absolute inset-0 bg-slate-950/40 backdrop-blur-md transition-opacity duration-300"
+            className="absolute inset-0 bg-slate-950/60 backdrop-blur-md transition-opacity duration-300"
             onClick={closeModal}
           ></div>
 
           {/* Modal Container */}
-          <div className="relative bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-xl w-full overflow-hidden flex flex-col z-10 animate-reveal scale-100 max-h-[90vh]">
+          <div className="relative bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 max-w-xl w-full overflow-hidden flex flex-col z-10 animate-reveal scale-100 max-h-[90vh]">
             
             {/* Modal Header */}
-            <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
+            <div className="p-5 sm:p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <div>
-                <h4 className="font-serif text-base sm:text-lg font-bold text-slate-800 leading-tight">
+                <h4 className="font-serif text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 leading-tight">
                   {selectedActivity.role}
                 </h4>
-                <p className="text-xs font-bold text-slate-400 mt-1">
+                <p className="text-xs font-bold text-slate-400 dark:text-slate-500 mt-1">
                   {selectedActivity.organization}
                 </p>
               </div>
               <button 
                 onClick={closeModal}
-                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-xl transition-all"
+                className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Modal Navigation Tabs */}
-            <div className="flex border-b border-slate-100 bg-slate-50/50 p-1.5 gap-1.5 text-xs font-bold uppercase tracking-wider">
+            <div className="flex border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 p-1.5 gap-1.5 text-xs font-bold uppercase tracking-wider">
               <button 
                 className={`flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all ${
                   activeTab === 'activity' 
-                    ? 'bg-white text-sky-600 shadow-sm' 
-                    : 'text-slate-500 hover:text-slate-800'
+                    ? 'bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm' 
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
                 onClick={() => setActiveTab('activity')}
               >
@@ -172,8 +172,8 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
               <button 
                 className={`flex-1 py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all ${
                   activeTab === 'certificate' 
-                    ? 'bg-white text-sky-600 shadow-sm' 
-                    : 'text-slate-500 hover:text-slate-800'
+                    ? 'bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm' 
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
                 onClick={() => setActiveTab('certificate')}
               >
@@ -183,28 +183,28 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
             </div>
 
             {/* Modal Content - Images or Custom Placeholder */}
-            <div className="p-6 flex-grow overflow-y-auto flex flex-col items-center justify-center bg-slate-50/20 min-h-[300px]">
+            <div className="p-6 flex-grow overflow-y-auto flex flex-col items-center justify-center bg-slate-50/20 dark:bg-slate-950/20 min-h-[300px]">
               {/* 2. Safety Render Check: Show placeholder if showPlaceholder is true OR imgSrc is still empty */}
               {showPlaceholder || !imgSrc ? (
-                <div className="w-full aspect-[4/3] rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 flex flex-col items-center justify-center text-center p-6 transition-all duration-300 animate-reveal">
-                  <div className="h-12 w-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center mb-4">
+                <div className="w-full aspect-[4/3] rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/30 flex flex-col items-center justify-center text-center p-6 transition-all duration-300 animate-reveal">
+                  <div className="h-12 w-12 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center mb-4">
                     {activeTab === 'activity' ? (
                       <ImageIcon className="h-5 w-5" />
                     ) : (
                       <Award className="h-5 w-5" />
                     )}
                   </div>
-                  <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                     {activeTab === 'activity' ? 'No Photo Uploaded' : 'No Certificate Uploaded'}
                   </h4>
-                  <p className="text-[11px] text-slate-400 max-w-[280px] leading-relaxed">
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500 max-w-[280px] leading-relaxed">
                     {activeTab === 'activity' 
                       ? 'Activity photo is not uploaded yet. Please drop an image.png or image.jpg file in this folder.'
                       : 'Certificate document is not uploaded yet. Please drop an image.png or image.jpg file in this folder.'}
                   </p>
                 </div>
               ) : (
-                <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-slate-200/60 bg-slate-900 shadow-inner flex items-center justify-center group/img">
+                <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-slate-200/60 dark:border-slate-800 bg-slate-900 shadow-inner flex items-center justify-center group/img">
                   <img 
                     src={imgSrc} 
                     alt={selectedActivity.role}
@@ -215,7 +215,7 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
               )}
               
               {!showPlaceholder && imgSrc && (
-                <p className="text-[11px] text-slate-400 mt-4 leading-relaxed text-center max-w-sm font-normal">
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-4 leading-relaxed text-center max-w-sm font-normal">
                   {activeTab === 'activity' 
                     ? `Documentation photo of active participation as ${selectedActivity.role} at ${selectedActivity.organization}.`
                     : `Official award certificate credential for ${selectedActivity.role} (received in ${selectedActivity.period.split(' - ')[0] || '2024'}).`}

@@ -1,127 +1,120 @@
 'use client';
 
 import React, { useState } from 'react';
-import { UploadCloud, AlertCircle, FileText, Loader2 } from 'lucide-react';
+import { Send, User, Mail, MessageSquare } from 'lucide-react';
 
 export default function ContactForm() {
-  // File upload state (Vercel Blob simulation/real integration)
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [uploadUrl, setUploadUrl] = useState<string | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      if (file.type !== 'application/pdf') {
-        setUploadError('Only PDF files are allowed.');
-        return;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        setUploadError('Maximum file size is 5MB.');
-        return;
-      }
-      setSelectedFile(file);
-      setUploadError(null);
-      setUploadUrl(null);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      setError('Please fill in all fields.');
+      return;
     }
-  };
 
-  const handleFileUpload = async () => {
-    if (!selectedFile) return;
-    setIsUploading(true);
-    setUploadError(null);
-
-    try {
-      const response = await fetch(`/api/upload?filename=${encodeURIComponent(selectedFile.name)}`, {
-        method: 'POST',
-        body: selectedFile,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setUploadUrl(result.url);
-        setSelectedFile(null);
-      } else {
-        setUploadError(result.error || 'Failed to upload file.');
-      }
-    } catch (err) {
-      console.error('File upload error:', err);
-      setUploadError('An error occurred while uploading the file.');
-    } finally {
-      setIsUploading(false);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
+      return;
     }
+
+    // Format the WhatsApp message text beautifully
+    const formattedText = `*Academic Portfolio Inquiry*\n` +
+                          `---------------------------------------\n` +
+                          `*Name:* ${name.trim()}\n` +
+                          `*Email:* ${email.trim()}\n` +
+                          `*Message:* ${message.trim()}`;
+
+    const whatsappUrl = `https://wa.me/6285926182642?text=${encodeURIComponent(formattedText)}`;
+    
+    // Redirect directly to WhatsApp
+    window.open(whatsappUrl, '_blank');
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-sm glow-sky flex flex-col justify-between min-h-[380px]">
+    <div className="bg-white dark:bg-slate-950 p-6 sm:p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm glow-sky flex flex-col justify-between min-h-[380px] transition-colors duration-300">
       <div>
-        <h4 className="font-serif text-xl font-bold text-slate-800 mb-3 text-center">Upload Collaboration Draft</h4>
-        <p className="text-xs text-slate-500 leading-relaxed mb-6 text-center max-w-md mx-auto font-sans font-normal">
-          Do you have an economics paper draft, supporting statistical datasets, or a research outline to review together? Securely upload your document here.
+        <h4 className="font-serif text-xl font-bold text-slate-800 dark:text-slate-100 mb-2 text-center transition-colors">Send Instant Message</h4>
+        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-6 text-center max-w-md mx-auto font-sans font-normal transition-colors">
+          Fill out the fields below, and instantly deliver your message, request, or proposal to Luthfiyah's WhatsApp on submission.
         </p>
 
-        <div className="border-2 border-dashed border-slate-200 hover:border-sky-400 rounded-2xl p-8 flex flex-col items-center justify-center bg-slate-50/50 text-center transition-colors">
-          <input
-            type="file"
-            id="essay-upload"
-            accept=".pdf"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-          <label htmlFor="essay-upload" className="cursor-pointer flex flex-col items-center gap-3">
-            <UploadCloud className="h-12 w-12 text-slate-400 hover:text-sky-500 transition-colors" />
-            <span className="text-xs font-bold text-slate-700">
-              {selectedFile ? selectedFile.name : 'Choose PDF file (max. 5MB)'}
-            </span>
-            <span className="text-[10px] text-slate-400">Click to browse your local files</span>
-          </label>
-        </div>
-
-        {uploadError && (
-          <div className="mt-4 flex items-center gap-2 text-xs font-medium text-red-600 bg-red-50 p-2.5 rounded-xl border border-red-100">
-            <AlertCircle className="h-4 w-4 shrink-0" />
-            <span>{uploadError}</span>
-          </div>
-        )}
-
-        {uploadUrl && (
-          <div className="mt-5 p-4 bg-emerald-50 rounded-2xl border border-emerald-100 flex flex-col gap-2 animate-reveal">
-            <div className="flex items-center gap-2 text-xs font-bold text-emerald-800">
-              <FileText className="h-4 w-4 text-emerald-600" />
-              <span>Document Uploaded Successfully!</span>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name Field */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Your Name</label>
+            <div className="relative">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 dark:text-slate-600">
+                <User className="h-4 w-4" />
+              </span>
+              <input
+                type="text"
+                placeholder="e.g. Prof. Aris"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full text-xs bg-slate-50/50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800 rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 dark:text-white transition-all font-sans"
+              />
             </div>
-            <a
-              href={uploadUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-[11px] text-sky-600 underline font-medium truncate"
-            >
-              {uploadUrl}
-            </a>
           </div>
-        )}
-      </div>
 
-      <button
-        type="button"
-        onClick={handleFileUpload}
-        disabled={!selectedFile || isUploading}
-        className="mt-8 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-semibold transition-colors duration-200 disabled:opacity-50 cursor-pointer shadow-sm shadow-sky-500/10"
-      >
-        {isUploading ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            <span>Uploading to Vercel Blob...</span>
-          </>
-        ) : (
-          <>
-            <UploadCloud className="h-4 w-4" />
-            <span>Upload Document</span>
-          </>
-        )}
-      </button>
+          {/* Email Field */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Your Email</label>
+            <div className="relative">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400 dark:text-slate-600">
+                <Mail className="h-4 w-4" />
+              </span>
+              <input
+                type="email"
+                placeholder="e.g. aris@campus.edu"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full text-xs bg-slate-50/50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800 rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 dark:text-white transition-all font-sans"
+              />
+            </div>
+          </div>
+
+          {/* Message Field */}
+          <div>
+            <label className="block text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1.5">Your Message</label>
+            <div className="relative">
+              <span className="absolute top-3.5 left-3 text-slate-400 dark:text-slate-600">
+                <MessageSquare className="h-4 w-4" />
+              </span>
+              <textarea
+                placeholder="Write your research query or academic feedback here..."
+                rows={4}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="w-full text-xs bg-slate-50/50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800 rounded-xl pl-10 pr-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 dark:text-white transition-all font-sans resize-none"
+              />
+            </div>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="text-[11px] font-bold text-red-500 bg-red-50 dark:bg-red-950/20 p-2.5 rounded-xl border border-red-100 dark:border-red-900/50 flex items-center gap-1.5 animate-reveal">
+              <span>⚠️</span>
+              <span>{error}</span>
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-sm shadow-emerald-500/10 cursor-pointer"
+          >
+            <Send className="h-3.5 w-3.5" />
+            <span>Send to WhatsApp</span>
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

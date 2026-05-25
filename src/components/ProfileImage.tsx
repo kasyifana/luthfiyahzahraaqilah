@@ -57,7 +57,7 @@ export default function ProfileImage({ fallbackUrl, name }: ProfileImageProps) {
       src={imgSrc} 
       alt={name}
       onError={handleImageError}
-      className="w-full h-auto object-cover grayscale contrast-[1.05] group-hover:grayscale-0 transition-all duration-500 max-h-[350px] select-none"
+      className="w-full h-auto object-cover contrast-[1.05] group-hover:grayscale transition-all duration-500 max-h-[350px] select-none"
     />
   );
 }
