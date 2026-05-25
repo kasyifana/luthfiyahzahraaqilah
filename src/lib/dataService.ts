@@ -2,7 +2,7 @@ import { prisma } from './db';
 import fs from 'fs';
 import path from 'path';
 
-const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+const isProduction = process.env.VERCEL === '1' || process.env.NOW_BUILD === '1';
 
 export interface Profile {
   id: string;
