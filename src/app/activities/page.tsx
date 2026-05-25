@@ -1,4 +1,5 @@
 import React from 'react';
+export const dynamic = 'force-dynamic';
 import { ArrowLeft, Award } from 'lucide-react';
 import ActivitiesTimeline from '@/components/ActivitiesTimeline';
 import { getActivities, getProfile } from '@/lib/dataService';

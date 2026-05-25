@@ -29,7 +29,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     if (hasValidToken) {
       try {
         console.log(`[UPLOAD] Uploading to Vercel Blob: ${blobPath}`);
-        const blob = await put(blobPath, buffer, { access: 'public' });
+        const blob = await put(blobPath, buffer, { access: 'public', allowOverwrite: true });
         console.log(`[UPLOAD] Success: ${blob.url}`);
         return NextResponse.json({ success: true, url: blob.url });
       } catch (blobError) {
