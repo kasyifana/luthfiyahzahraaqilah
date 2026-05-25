@@ -33,11 +33,11 @@ export async function POST(request: Request): Promise<NextResponse> {
         console.log(`[UPLOAD] Success: ${blob.url}`);
         return NextResponse.json({ success: true, url: blob.url });
       } catch (blobError) {
-        console.error('[UPLOAD] Vercel Blob upload failed:', blobError);
-        // If on Vercel cloud, don't try local write - return error
+        const errMsg = blobError instanceof Error ? blobError.message : String(blobError);
+        console.error('[UPLOAD] Vercel Blob upload failed:', errMsg);
         if (ON_VERCEL) {
           return NextResponse.json(
-            { success: false, error: 'Cloud storage upload failed. Please check Vercel Blob configuration.' },
+            { success: false, error: `Vercel Blob error: ${errMsg}` },
             { status: 500 }
           );
         }
