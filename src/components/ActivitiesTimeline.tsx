@@ -9,6 +9,9 @@ interface Activity {
   organization: string;
   period: string;
   description: string;
+  imageUrl?: string | null;
+  certificateUrl?: string | null;
+  isTop3?: boolean;
 }
 
 interface ActivitiesTimelineProps {
@@ -36,10 +39,16 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
     setSelectedActivity(activity);
     setActiveTab('activity');
     
-    // 1. Pre-initialize imgSrc to avoid empty string on first render frame
+    // Pre-initialize imgSrc to avoid empty string on first render frame
+    if (activity.imageUrl) {
+      setImgSrc(activity.imageUrl);
+      return;
+    }
     const key = ACTIVITY_KEYS[activity.role];
     if (key) {
       setImgSrc(`/images/activities/${key}/image.png`);
+    } else {
+      setImgSrc('');
     }
   };
 
@@ -50,8 +59,18 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
   // Sync image source with sequential file attempts on tab or activity change
   useEffect(() => {
     if (selectedActivity) {
+      // 1. Prioritize dynamic database uploads
+      const dynamicUrl = activeTab === 'activity' ? selectedActivity.imageUrl : selectedActivity.certificateUrl;
+      if (dynamicUrl) {
+        setImgSrc(dynamicUrl);
+        setAttempts([dynamicUrl]);
+        setAttemptIndex(0);
+        setShowPlaceholder(false);
+        return;
+      }
+
+      // 2. Fall back to legacy hardcoded assets
       const key = ACTIVITY_KEYS[selectedActivity.role];
-      
       if (key) {
         const folder = activeTab === 'activity' ? 'activities' : 'certificates';
         
@@ -66,9 +85,42 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
         setAttemptIndex(0);
         setShowPlaceholder(false);
         setImgSrc(fileAttempts[0]);
+      } else {
+        // No key and no dynamic URL, show placeholder
+        setShowPlaceholder(true);
+        setImgSrc('');
+        setAttempts([]);
+        setAttemptIndex(0);
       }
     }
   }, [selectedActivity, activeTab]);
+
+  // Self-healing IntersectionObserver scroll reveal effect for timeline cards
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px -50px 0px -50px',
+      threshold: 0.05,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    revealElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      revealElements.forEach((el) => {
+        observer.unobserve(el);
+      });
+    };
+  }, [activities]);
 
   // Image load error: self-heals by advancing (PNG -> JPG -> JPEG -> Placeholder)
   const handleImageError = () => {
@@ -80,6 +132,7 @@ export default function ActivitiesTimeline({ activities }: ActivitiesTimelinePro
       setShowPlaceholder(true);
     }
   };
+
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">

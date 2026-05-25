@@ -9,23 +9,28 @@ interface ProfileImageProps {
 
 export default function ProfileImage({ fallbackUrl, name }: ProfileImageProps) {
   const fileAttempts = [
+    fallbackUrl,
     '/images/profile/image.png',
     '/images/profile/image.jpg',
     '/images/profile/image.jpeg'
-  ];
+  ].filter(Boolean) as string[];
 
-  const [imgSrc, setImgSrc] = useState<string>(fileAttempts[0]);
+  const [imgSrc, setImgSrc] = useState<string>(fileAttempts[0] || '/images/profile/image.png');
   const [attemptIndex, setAttemptIndex] = useState<number>(0);
   const [showPlaceholder, setShowPlaceholder] = useState<boolean>(false);
 
   // Sync state and reset attempts
   useEffect(() => {
-    setImgSrc(fileAttempts[0]);
+    if (fileAttempts.length > 0) {
+      setImgSrc(fileAttempts[0]);
+    } else {
+      setImgSrc('/images/profile/image.png');
+    }
     setAttemptIndex(0);
     setShowPlaceholder(false);
   }, [fallbackUrl]);
 
-  // Try next file format, and if all three fail, show a gorgeous initials placeholder
+  // Try next file format, and if all attempts fail, show a initials placeholder
   const handleImageError = () => {
     const nextIndex = attemptIndex + 1;
     if (nextIndex < fileAttempts.length) {

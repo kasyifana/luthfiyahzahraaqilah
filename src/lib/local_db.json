@@ -1,0 +1,106 @@
+{
+  "profile": {
+    "id": "profile-1",
+    "name": "Luthfiyah Zahra Aqilah",
+    "title": "Economic Expert & Development Economics Student",
+    "bio": "A passionately dedicated 2nd-semester Development Economics student at Universitas Negeri Semarang (UNNES). Focuses on regional econometrics, creative sectors, and local cultural arts leadership.",
+    "headshotUrl": "/images/profile/image.png",
+    "academicFocus": "Development Economics, Creative Economy, & Cultural Arts Preservation",
+    "email": "luthfiyahzahraaqilah@gmail.com",
+    "linkedinUrl": "https://instagram.com/luthfi.za_"
+  },
+  "projects": [
+    {
+      "id": "p1",
+      "title": "Analisis Dampak Sosial-Ekonomi Sektor Pariwisata Seni Budaya di Jawa Tengah",
+      "description": "A socio-economic research paper evaluating the correlation between cultural arts preservation (such as traditional dance festivals) and local economic growth/community income in Banten and Central Java.",
+      "category": "Creative Economy",
+      "url": "#",
+      "dataPointsCount": 8400,
+      "publishedAt": "April 2026",
+      "pdfUrl": null
+    },
+    {
+      "id": "p2",
+      "title": "Pemberdayaan Ekonomi Kreatif Berbasis Seni Tradisional di Tangerang Selatan",
+      "description": "A policy review focusing on the role of youth organizations and local arts clubs (like dance groups) in boosting regional micro-economies, youth employment, and community engagement.",
+      "category": "Policy Review",
+      "url": "#",
+      "dataPointsCount": 3200,
+      "publishedAt": "February 2026",
+      "pdfUrl": null
+    },
+    {
+      "id": "p3",
+      "title": "Peta Disparitas Indeks Pembangunan Manusia (IPM) Provinsi Banten & Jawa Tengah",
+      "description": "A comparative quantitative analysis of education, health, and economic indicators between South Tangerang and Semarang using BPS microdata.",
+      "category": "Regional Disparity",
+      "url": "#",
+      "dataPointsCount": 15600,
+      "publishedAt": "December 2025",
+      "pdfUrl": null
+    }
+  ],
+  "activities": [
+    {
+      "id": "a1",
+      "role": "BESTARI EXTRACURRICULAR - DANCE CLUB COMMITTEE",
+      "organization": "SMAN 12 Tangerang Selatan",
+      "period": "2024 - 2025",
+      "description": "Served as a committee member of BESTARI Dance Club during senior high school. Responsible for assisting event preparation, coordinating practice schedules, supporting team performances, and contributing to the organization of cultural and school art activities."
+    },
+    {
+      "id": "a2",
+      "role": "SECOND WINNER - KINANTI LARAS TRADITIONAL DANCE",
+      "organization": "South Tangerang City Inter-School Dance Competition",
+      "period": "2024",
+      "description": "Achieved 2nd place at the South Tangerang City inter-school traditional dance competition with the Kinanti Laras dance. Collaborated closely with team members in choreography preparation, synchronization, and stage performance while representing the school in a cultural arts competition."
+    },
+    {
+      "id": "a3",
+      "role": "AWARD - LENGGANG NYAI TRADITIONAL DANCE",
+      "organization": "Lenggang Nyai Performance Category",
+      "period": "2024",
+      "description": "Participated in a traditional dance competition representing the team in the Lenggang Nyai performance category. Demonstrated teamwork, stage confidence, discipline during training sessions, and strong understanding of traditional choreography and cultural performance values."
+    },
+    {
+      "id": "activity-1779692264351",
+      "role": "testing db",
+      "organization": "testing db org",
+      "period": "2025",
+      "description": "detail",
+      "imageUrl": "/uploads/uploaded_1779692261354.jpg",
+      "certificateUrl": "/uploads/uploaded_1779692263942.jpg"
+    },
+    {
+      "id": "activity-1779692497970",
+      "role": "testing db",
+      "organization": "testing db",
+      "period": "2023",
+      "description": "testing db",
+      "imageUrl": "/uploads/uploaded_1779692496802.jpg",
+      "certificateUrl": "",
+      "isTop3": true
+    },
+    {
+      "id": "activity-1779692546554",
+      "role": "asdf",
+      "organization": "asdf",
+      "period": "123",
+      "description": "asdfasdf",
+      "imageUrl": "/uploads/uploaded_1779692545635.jpeg",
+      "certificateUrl": "",
+      "isTop3": false
+    },
+    {
+      "id": "activity-1779692609467",
+      "role": "testing curl",
+      "organization": "testing curl",
+      "period": "2023",
+      "description": "testing curl",
+      "imageUrl": "/uploads/uploaded_1779692496802.jpg",
+      "certificateUrl": "",
+      "isTop3": true
+    }
+  ]
+}

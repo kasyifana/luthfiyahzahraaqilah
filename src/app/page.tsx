@@ -50,6 +50,13 @@ export default async function Home() {
   const projects = await getProjects();
   const activities = await getActivities();
 
+  // Filter activities to display Top 3 highlights on homepage
+  const featuredActivities = activities.filter(a => a.isTop3 === true);
+  const displayActivities = featuredActivities.length > 0
+    ? featuredActivities
+    : activities.slice(0, 3);
+
+
   // Hardcoded Skills Dataset for static reliability
   const skills = [
     // Core Competencies
@@ -412,15 +419,67 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="bg-slate-50/40 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-3xl p-10 sm:p-12 flex flex-col items-center justify-center text-center max-w-lg mx-auto shadow-sm shadow-slate-100/50 hover:border-sky-200 dark:hover:border-sky-850 transition-all duration-300">
-              <SoonAnimation />
-              <h3 className="font-serif text-3xl font-black text-sky-600 uppercase tracking-widest mb-2 select-none">
-                Soon
-              </h3>
-              <p className="text-xs text-slate-400 dark:text-slate-500 max-w-xs leading-relaxed font-normal transition-colors duration-300">
-                A comprehensive set of independent research papers, BPS data visualizations, and strategic development policy essays are currently in preparation.
-              </p>
-            </div>
+            {projects.length === 0 ? (
+              <div className="bg-slate-50/40 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-3xl p-10 sm:p-12 flex flex-col items-center justify-center text-center max-w-lg mx-auto shadow-sm shadow-slate-100/50 hover:border-sky-200 dark:hover:border-sky-850 transition-all duration-300">
+                <SoonAnimation />
+                <h3 className="font-serif text-3xl font-black text-sky-600 uppercase tracking-widest mb-2 select-none">
+                  Soon
+                </h3>
+                <p className="text-xs text-slate-400 dark:text-slate-500 max-w-xs leading-relaxed font-normal transition-colors duration-300">
+                  A comprehensive set of independent research papers, BPS data visualizations, and strategic development policy essays are currently in preparation.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                {projects.map((project) => (
+                  <div 
+                    key={project.id}
+                    className="bg-slate-50/60 dark:bg-slate-950 p-6 sm:p-8 rounded-3xl border border-slate-100 dark:border-slate-850 shadow-xs hover:scale-[1.02] hover:border-sky-100 dark:hover:border-sky-900 transition-all duration-300 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-[10px] font-black uppercase tracking-wider bg-sky-50 dark:bg-sky-950/80 text-sky-600 dark:text-sky-400 px-2.5 py-1 rounded-full">
+                          {project.category}
+                        </span>
+                        <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-550 font-sans">
+                          {project.publishedAt}
+                        </span>
+                      </div>
+                      <h3 className="font-serif text-lg sm:text-xl font-extrabold text-slate-800 dark:text-slate-100 mb-3 tracking-tight leading-snug">
+                        {project.title}
+                      </h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-6 font-normal">
+                        {project.description}
+                      </p>
+                    </div>
+
+                    <div className="space-y-4 pt-4 border-t border-slate-100/60 dark:border-slate-850/60">
+                      {project.dataPointsCount && (
+                        <div className="flex items-center justify-between">
+                          <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                            Analyzed Data Points
+                          </span>
+                          <span className="text-xs font-serif font-black text-sky-600 dark:text-sky-450">
+                            {project.dataPointsCount.toLocaleString('id-ID')}+
+                          </span>
+                        </div>
+                      )}
+                      
+                      {project.url && (
+                        <a 
+                          href={project.url}
+                          className="w-full flex items-center justify-center gap-1 px-4 py-2.5 bg-slate-50 hover:bg-sky-600 dark:bg-slate-900 dark:hover:bg-sky-500 text-slate-700 hover:text-white dark:text-slate-300 dark:hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer"
+                        >
+                          <span>Explore Essay</span>
+                          <ChevronRight className="h-4 w-4" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
           </div>
         </section>
 
@@ -437,9 +496,24 @@ export default async function Home() {
               </p>
             </div>
 
-            <ActivitiesTimeline activities={activities} />
+            <ActivitiesTimeline activities={displayActivities} />
+
+            {activities.length > 3 && (
+              <div className="text-center mt-12">
+                <a
+                  href="/activities"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-white dark:bg-slate-900 border border-slate-200/85 dark:border-slate-800 text-slate-750 dark:text-slate-250 hover:text-sky-600 dark:hover:text-sky-400 font-bold text-xs uppercase tracking-wider rounded-2xl shadow-xs hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 group"
+                >
+                  <span>Explore Full Leadership Timeline</span>
+                  <span className="font-serif font-black text-sky-600 dark:text-sky-400 group-hover:translate-x-1 transition-transform inline-block">
+                    →
+                  </span>
+                </a>
+              </div>
+            )}
           </div>
         </section>
+
 
         {/* Contact Form Section */}
         <section id="contact" className="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">

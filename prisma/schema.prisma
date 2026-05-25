@@ -39,12 +39,16 @@ model Project {
 }
 
 model Activity {
-  id           String @id @default(uuid())
-  role         String
-  organization String
-  period       String // e.g., "Jan 2026 - Present"
-  description  String
+  id             String @id @default(uuid())
+  role           String
+  organization   String
+  period         String // e.g., "Jan 2026 - Present"
+  description    String
+  imageUrl       String? // Dynamic activity illustration/photo url
+  certificateUrl String? // Verified credential / certificate url
+  isTop3         Boolean @default(false)
 }
+
 
 model ContactLog {
   id        String   @id @default(uuid())
