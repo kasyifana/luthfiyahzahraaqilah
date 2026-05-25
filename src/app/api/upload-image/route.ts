@@ -23,8 +23,16 @@ export async function POST(request: Request): Promise<NextResponse> {
     const fileExtension = path.extname(originalName) || '.png';
     const cleanFileName = `uploaded_${Date.now()}${fileExtension}`;
 
+    const isVercel = process.env.VERCEL === '1' || process.env.NOW_BUILD === '1';
+
     // Helper function to handle local profile image write
     const writeProfileLocal = (): NextResponse => {
+      if (isVercel) {
+        return NextResponse.json(
+          { success: false, error: 'Vercel Blob token is missing or misconfigured in production. Local uploads are not supported on Vercel read-only filesystem.' },
+          { status: 500 }
+        );
+      }
       console.log("[UPLOAD-FALLBACK] Saving profile image to local disk.");
       const targetPath = path.join(process.cwd(), 'public', 'images', 'profile', 'image.png');
       const targetDir = path.dirname(targetPath);
@@ -39,9 +47,15 @@ export async function POST(request: Request): Promise<NextResponse> {
         url: `/images/profile/image.png?t=${Date.now()}` 
       });
     };
-
+ 
     // Helper function to handle local generic uploader write
     const writeGenericLocal = (): NextResponse => {
+      if (isVercel) {
+        return NextResponse.json(
+          { success: false, error: 'Vercel Blob token is missing or misconfigured in production. Local uploads are not supported on Vercel read-only filesystem.' },
+          { status: 500 }
+        );
+      }
       console.log("[UPLOAD-FALLBACK] Saving generic image to local uploads disk.");
       const uploadDir = path.join(process.cwd(), 'public', 'uploads');
       
